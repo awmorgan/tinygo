@@ -18,7 +18,6 @@ type Atom struct {
 
 type Pair struct {
 	isExpression, isAtom, isString bool
-	value                          interface{}
 	pcar, pcdr                     SE
 }
 
