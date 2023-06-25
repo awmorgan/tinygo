@@ -17,16 +17,13 @@ type se struct {
 }
 
 type Atom struct {
-	se
+	isExpression, isAtom, isString bool
+	value                          interface{}
 }
 
 type Pair struct {
 	se
 	pcar, pcdr SE
-}
-
-type Proc struct {
-	se
 }
 
 type clause struct {
@@ -50,6 +47,13 @@ func (s se) IsS() bool {
 func (s se) AsS() string {
 	return s.value.(string)
 }
+func (s Atom) IsS() bool {
+	return s.isAtom && s.isString
+}
+
+func (s Atom) AsS() string {
+	return s.value.(string)
+}
 
 func Newstring(s string) Atom {
 	a := NewAtom(s)
@@ -58,11 +62,11 @@ func Newstring(s string) Atom {
 }
 
 func NewAtom(v interface{}) Atom {
-	return Atom{se{
+	return Atom{
 		isExpression: true,
 		isAtom:       true,
 		value:        v,
-	}}
+	}
 }
 
 func NP(car, cdr SE) Pair {
