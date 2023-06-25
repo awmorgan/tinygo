@@ -8,10 +8,7 @@ import (
 
 type SE interface {
 	IsS() bool
-	IsA() bool
-	IsP() bool
 	AsS() string
-	AsF() float64
 }
 
 type se struct {
@@ -30,26 +27,7 @@ type Pair struct {
 
 type Proc struct {
 	se
-	isBuiltin bool
 }
-
-type Lisp struct {
-	process *process
-	Env     *Env
-}
-
-type Env struct {
-	dict  map[string]SE
-	outer *Env
-}
-
-type DefinedProc struct {
-	params Pair
-	body   SE
-	env    *Env
-}
-
-type BuiltinProc = func(*process, *Env, []SE) (SE, error)
 
 type process struct {
 	pid string
@@ -73,20 +51,8 @@ func (s se) IsS() bool {
 	return s.isAtom && s.isString
 }
 
-func (s se) IsA() bool {
-	return s.isExpression && s.isAtom
-}
-
-func (s se) IsP() bool {
-	return s.isExpression && !s.isAtom
-}
-
 func (s se) AsS() string {
 	return s.value.(string)
-}
-
-func (s se) AsF() float64 {
-	return s.value.(float64)
 }
 
 func Newstring(s string) Atom {
@@ -134,10 +100,6 @@ func cons2list(p Pair) []SE {
 		p = p.pcdr.(Pair)
 	}
 	return list
-}
-
-func add(p *process, env *Env, args []SE) (SE, error) {
-	return NewAtom(args[0].AsF() + args[1].AsF()), nil
 }
 
 const ellipsis = "..."
@@ -259,17 +221,6 @@ func analyseEllipsis(p pattern, e map[string]int, d int) {
 			analyseEllipsis(pp, e, nd)
 		}
 	}
-}
-
-func Multiparse(f string) ([]SE, error) {
-	var e SE
-	t := tokenize(f)
-	exprs := []SE{}
-	for len(t) > 0 {
-		e, t, _ = readFromTokens(t)
-		exprs = append(exprs, e)
-	}
-	return exprs, nil
 }
 
 func tokenize(s string) []string {
