@@ -119,10 +119,6 @@ func parse(program string) (SE, error) {
 	return p, err
 }
 
-func expandMacro(p Pair) (SE, bool) {
-	return p, false
-}
-
 func syntaxRules(keyword string, sr Pair) {
 	literals := []string{keyword, "lambda", "define", "begin"}
 	for _, e := range cons2list(sr.pcdr.(Pair).pcar.(Pair)) {
@@ -173,7 +169,6 @@ func analyse(l []string, p SE, g map[string]string, b bool) pattern {
 		if ns, ok := g[s]; ok {
 			return pattern{isVariable: true, content: Newstring(ns)}
 		}
-		return pattern{isVariable: true, content: p}
 	}
 	lc := []pattern{}
 	list := cons2list(p.(Pair))
