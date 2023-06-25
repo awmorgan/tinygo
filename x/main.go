@@ -79,9 +79,6 @@ func list2cons(list ...SE) Pair {
 	if len(list) == 0 {
 		return NP(nil, nil)
 	}
-	if len(list) == 1 {
-		return NP(list[0], NP(nil, nil))
-	}
 	cons := NP(nil, nil)
 	for i := len(list) - 1; i >= 0; i-- {
 		cons = NP(list[i], cons)
@@ -121,9 +118,6 @@ func parse(program string) (SE, error) {
 
 func syntaxRules(keyword string, sr Pair) {
 	literals := []string{keyword, "lambda", "define", "begin"}
-	for _, e := range cons2list(sr.pcdr.(Pair).pcar.(Pair)) {
-		literals = append(literals, e.AsS())
-	}
 	prepareClauses(sr, literals)
 }
 
