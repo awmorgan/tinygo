@@ -48,7 +48,7 @@ func (s Pair) IsS() bool {
 }
 
 func (s Pair) AsS() string {
-	return s.value.(string)
+	return ""
 }
 
 func Newstring(s string) Atom {
