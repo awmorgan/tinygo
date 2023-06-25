@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -318,38 +319,27 @@ func syntaxRules(keyword string, sr Pair) transformer {
 }
 
 func prepareClauses(sr Pair, literals []string) []clause {
-	clauses := []clause{}
 	b := []bool{}
 	for _, c := range cons2list(sr.pcdr.(Pair).pcdr.(Pair)) {
 		cp := c.(Pair)
 		s := map[string]string{}
 		e := map[string]int{}
 		p := analysePattern(literals, cp.pcar, s, e)
-		// println("before p.isList: ", p.isList)
 		t := analyseTemplate(literals, cp.pcdr.(Pair).pcar, s, e)
-		// println("after p.isList: ", p.isList)
 		c1 := clause{pattern: p, template: t, ellipsis: e}
-		clauses = append(clauses, c1)
+		// clauses = append(clauses, c1)
 		println("c1.pattern.isList: ", c1.pattern.isList)
-		println("clauses[0].pattern.isList: ", clauses[0].pattern.isList)
-		// b1 := clauses[0].pattern.isList
-		// b = append(b, b1)
+		// println("clauses[0].pattern.isList: ", clauses[0].pattern.isList)
 		b = append(b, c1.pattern.isList)
 		println("b[0]: ", b[0])
-		// for i, c := range clauses {
-		// 	println("i: ", i, " c.isList: ", c.pattern.isList)
-		// }
 	}
-	return clauses
+	os.Exit(0)
+	return []clause{}
 }
 
 func generateTransformerFunction(clauses []clause) transformer {
 	return func(p Pair) SE {
-		substitutions := map[string]SE{}
-		fmt.Printf("in closure: \n")
-		fmt.Printf("pattern.isList: %v\n", clauses[0].pattern.isList)
-		unify(clauses[0].pattern, p, substitutions)
-		return substituteTemplate(clauses[0].template, substitutions, clauses[0].ellipsis)
+		return substituteTemplate(clauses[0].template, map[string]SE{}, clauses[0].ellipsis)
 	}
 }
 
