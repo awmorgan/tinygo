@@ -29,10 +29,6 @@ type Proc struct {
 	se
 }
 
-type process struct {
-	pid string
-}
-
 type clause struct {
 	pattern, template pattern
 	ellipsis          map[string]int
@@ -245,12 +241,5 @@ func readFromTokens(t []string) (SE, []string, error) {
 }
 
 func atom(t string) SE {
-	if t == "0" || t == "1" {
-		return NewAtom(float64(t[0] - '0'))
-	}
-	if t[0] == '\'' {
-		q, _, _ := readFromTokens([]string{"(", "quote", t[1:], ")"})
-		return q
-	}
 	return Newstring(t)
 }
