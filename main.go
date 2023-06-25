@@ -1859,7 +1859,7 @@ func main() {
 		if strings.HasSuffix(goenv.Version, "-dev") && goenv.GitSha1 != "" {
 			version += "-" + goenv.GitSha1
 		}
-		fmt.Printf("tinygo version %s %s/%s (using go version %s and LLVM version %s)\n", version, runtime.GOOS, runtime.GOARCH, goversion, llvm.Version)
+		fmt.Printf("tinygo bill version %s %s/%s (using go version %s and LLVM version %s)\n", version, runtime.GOOS, runtime.GOARCH, goversion, llvm.Version)
 	case "env":
 		if flag.NArg() == 0 {
 			// Show all environment variables.
