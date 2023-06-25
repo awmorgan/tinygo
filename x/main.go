@@ -327,9 +327,7 @@ func prepareClauses(sr Pair, literals []string) []clause {
 		p := analysePattern(literals, cp.pcar, s, e)
 		t := analyseTemplate(literals, cp.pcdr.(Pair).pcar, s, e)
 		c1 := clause{pattern: p, template: t, ellipsis: e}
-		// clauses = append(clauses, c1)
 		println("c1.pattern.isList: ", c1.pattern.isList)
-		// println("clauses[0].pattern.isList: ", clauses[0].pattern.isList)
 		b = append(b, c1.pattern.isList)
 		println("b[0]: ", b[0])
 	}
