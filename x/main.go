@@ -93,9 +93,6 @@ func cons2list(p Pair) []SE {
 	return list
 }
 
-const ellipsis = "..."
-const underscore = "_"
-
 func init() {
 	s := mustParse(`(syntax-rules ()
                                  ((_ ((var exp) ...) body1 body2 ...)
@@ -145,7 +142,7 @@ func gensym() string {
 func analyse(l []string, p SE, g map[string]string, b bool) pattern {
 	if p.IsS() {
 		s := p.AsS()
-		if s == underscore {
+		if s == "_" {
 			return pattern{isUnderscore: true}
 		}
 		for _, lt := range l {
@@ -168,7 +165,7 @@ func analyse(l []string, p SE, g map[string]string, b bool) pattern {
 		pi := analyse(l, list[i], g, b)
 		if i != len(list)-1 {
 			sj := list[i+1]
-			if sj.IsS() && sj.AsS() == ellipsis {
+			if sj.IsS() && sj.AsS() == "..." {
 				pi.hasEllipsis = true
 				i++
 			}
