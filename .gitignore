@@ -33,3 +33,6 @@ test.nro
 test.wasm
 wasm.wasm
 tinygo
+x/profile.txt
+x/x
+x/coverdata
