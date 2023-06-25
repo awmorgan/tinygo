@@ -11,19 +11,15 @@ type SE interface {
 	AsS() string
 }
 
-type se struct {
-	isExpression, isAtom, isString bool
-	value                          interface{}
-}
-
 type Atom struct {
 	isExpression, isAtom, isString bool
 	value                          interface{}
 }
 
 type Pair struct {
-	se
-	pcar, pcdr SE
+	isExpression, isAtom, isString bool
+	value                          interface{}
+	pcar, pcdr                     SE
 }
 
 type clause struct {
@@ -40,18 +36,18 @@ type pattern struct {
 func main() {
 }
 
-func (s se) IsS() bool {
-	return s.isAtom && s.isString
-}
-
-func (s se) AsS() string {
-	return s.value.(string)
-}
 func (s Atom) IsS() bool {
 	return s.isAtom && s.isString
 }
 
 func (s Atom) AsS() string {
+	return s.value.(string)
+}
+func (s Pair) IsS() bool {
+	return s.isAtom && s.isString
+}
+
+func (s Pair) AsS() string {
 	return s.value.(string)
 }
 
@@ -71,11 +67,9 @@ func NewAtom(v interface{}) Atom {
 
 func NP(car, cdr SE) Pair {
 	return Pair{
-		se: se{
-			isExpression: true,
-		},
-		pcar: car,
-		pcdr: cdr,
+		isExpression: true,
+		pcar:         car,
+		pcdr:         cdr,
 	}
 }
 
